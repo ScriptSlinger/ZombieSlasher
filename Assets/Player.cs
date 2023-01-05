@@ -6,8 +6,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
-    [SerializeField] float _moveSpeed = 10f;
-    [SerializeField] float _jumpHeight = 2.0f;
+    [Range(1f, 35.0f)] [SerializeField] float _moveSpeed = 10f;
+    [Range(1f, 10.0f)] [SerializeField] float _jumpHeight = 2.0f;
     [Range(0.1f, 6.0f)] [SerializeField] float _fallSpeed = 2f;
 
     [SerializeField] bool _isGrounded;
@@ -30,36 +30,6 @@ public class Player : MonoBehaviour
         ApplyJumpVelocity();
     }
 
-    void ApplyJumpVelocity()
-    {
-        _characterController.Move(_jumpVelocity * Time.deltaTime);
-    }
-
-    void ApplyGravity()
-    {
-        _jumpVelocity.y += _gravity * Time.deltaTime * _fallSpeed;
-    }
-
-    void CheckForJumpInput()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
-        {
-            CalculateJumpVelocity();
-        }
-    }
-
-    void CalculateJumpVelocity()
-    {
-        _jumpVelocity.y += Mathf.Sqrt(_jumpHeight * -3.0f * _gravity);
-    }
-
-    void ResetGravityIfGrounded()
-    {
-        if (_isGrounded)
-        {
-            _jumpVelocity.y = -.2f;
-        }
-    }
 
     void MoveCharacter()
     {
@@ -68,8 +38,40 @@ public class Player : MonoBehaviour
 
         Vector3 movementDirection = new Vector3(horizontal, 0, forward);
 
-        _characterController.Move(movementDirection * Time.deltaTime * _moveSpeed);
+        _characterController.Move(movementDirection.normalized * Time.deltaTime * _moveSpeed);
     }
+    
+    void ResetGravityIfGrounded()
+    {
+        if (_isGrounded)
+        {
+            _jumpVelocity.y = -.2f;
+        }
+    }
+    
+    void CheckForJumpInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
+        {
+            CalculateJumpVelocity();
+        }
+    }
+    
+    void ApplyGravity()
+    {
+        _jumpVelocity.y += _gravity * Time.deltaTime * _fallSpeed;
+    }
+    
+    void ApplyJumpVelocity()
+    {
+        _characterController.Move(_jumpVelocity * Time.deltaTime);
+    }
+    
+    void CalculateJumpVelocity()
+    {
+        _jumpVelocity.y += Mathf.Sqrt(_jumpHeight * -3.0f * _gravity);
+    }
+    
 }
 
 

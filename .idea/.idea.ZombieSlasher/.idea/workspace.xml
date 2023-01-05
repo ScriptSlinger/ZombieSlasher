@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdeafe3b-ac0c-4d70-b67d-9f77f7b3a13f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ZombieSlasher/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ZombieSlasher/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/TestingGrounds.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/TestingGrounds.unity" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +66,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1672874549074</updated>
-      <workItem from="1672874557784" duration="7278000" />
+      <workItem from="1672874557784" duration="10543000" />
     </task>
     <servers />
   </component>
