@@ -7,47 +7,69 @@ public class Player : MonoBehaviour
 {
 
     [SerializeField] float _moveSpeed = 10f;
-    Rigidbody _rb;
-    
+    [SerializeField] float _jumpHeight = 2.0f;
+    [Range(0.1f, 6.0f)] [SerializeField] float _fallSpeed = 2f;
+
+    [SerializeField] bool _isGrounded;
+    CharacterController _characterController;
+    float _gravity = -9.81f;
+    Vector3 _jumpVelocity;
+
     void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
+        _characterController = GetComponent<CharacterController>();
     }
 
     void Update()
     {
-        Debug.Log(_rb.velocity);
-        
-        if (Input.GetKey(KeyCode.W))
-        {
-            //use rigidbody to move forward
-            //_rb.AddForce(Vector3.forward * _moveSpeed);
-            _rb.velocity = Vector3.forward * (_moveSpeed * Time.deltaTime); 
-            Debug.Log("Moving forward");
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            _rb.velocity = Vector3.back * (_moveSpeed * Time.deltaTime); 
-            Debug.Log("Moving backwards");
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            _rb.velocity = Vector3.left * (_moveSpeed * Time.deltaTime); 
-            Debug.Log("Moving left");
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            _rb.velocity = Vector3.right * (_moveSpeed * Time.deltaTime); 
-            Debug.Log("Moving right");
-        }
+        _isGrounded = _characterController.isGrounded;
+        MoveCharacter();
+        ResetGravityIfGrounded();
+        CheckForJumpInput();
+        ApplyGravity();
+        ApplyJumpVelocity();
+    }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+    void ApplyJumpVelocity()
+    {
+        _characterController.Move(_jumpVelocity * Time.deltaTime);
+    }
+
+    void ApplyGravity()
+    {
+        _jumpVelocity.y += _gravity * Time.deltaTime * _fallSpeed;
+    }
+
+    void CheckForJumpInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
         {
-            Debug.Log("Jumped");
+            CalculateJumpVelocity();
         }
     }
 
+    void CalculateJumpVelocity()
+    {
+        _jumpVelocity.y += Mathf.Sqrt(_jumpHeight * -3.0f * _gravity);
+    }
 
+    void ResetGravityIfGrounded()
+    {
+        if (_isGrounded)
+        {
+            _jumpVelocity.y = -.2f;
+        }
+    }
+
+    void MoveCharacter()
+    {
+        float horizontal = Input.GetAxisRaw("Horizontal");
+        float forward = Input.GetAxisRaw("Vertical");
+
+        Vector3 movementDirection = new Vector3(horizontal, 0, forward);
+
+        _characterController.Move(movementDirection * Time.deltaTime * _moveSpeed);
+    }
 }
 
 
